@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemAdapter (private val context:Context): RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
-
-    private var dataset: MutableList<Registro>? = mutableListOf()
+class ItemAdapter (private val context:Context, private val viewmodel:NumberViewModel): RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
 
     class ItemViewHolder(private val view: View):RecyclerView.ViewHolder(view){
         val textView: TextView = view.findViewById(R.id.item_title)
@@ -24,24 +22,19 @@ class ItemAdapter (private val context:Context): RecyclerView.Adapter<ItemAdapte
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = dataset?.get(position)
-        holder.textView.text =  item?.number.toString()
+        val dataset = viewmodel.getDataset()
+        val item = dataset[position]
+        holder.textView.text =  item.number.toString()
     }
 
     override fun getItemCount(): Int {
-        if(dataset != null) {
-            return dataset!!.size
-        }else{
-            return 0
-        }
+        val dataset = viewmodel.getDataset()
+        return dataset.size
     }
 
-    fun setRegistros(listaRegistro:List<Registro>){
-        if(dataset!=null){
-            val count = listaRegistro.size
-            this.dataset!!.add(listaRegistro[count - 1])
-            notifyItemInserted(dataset!!.size-1)
-        }
+    fun updateRegistros(){
+        val dataset = viewmodel.getDataset()
+        notifyItemInserted(dataset.size-1)
     }
 
 }

@@ -26,10 +26,4 @@ class RegistroRepository(application: Application) {
         registroDao.insertAll(registro)
     }
 
-    suspend fun insertListaRegistro(listaRegistro:List<Registro>){
-        for (registro in listaRegistro){
-            registroDao.insertAll(registro)
-        }
-    }
-
 }

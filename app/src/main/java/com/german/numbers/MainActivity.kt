@@ -19,18 +19,18 @@ class MainActivity : AppCompatActivity() {
 
         // Set RycyclerView Adapter
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        val myAdapter = ItemAdapter(this)
+        val myAdapter = ItemAdapter(this, myViewModel!!)
         recyclerView.adapter = myAdapter
         recyclerView.setHasFixedSize(true)
 
-        // Set LiveData - Observer
-        val myObserver = Observer<List<Registro>> { newRegistro ->
-            if(newRegistro != null) {
-                myAdapter.setRegistros(newRegistro)
+        // Set Listener for RecycledView
+        myViewModel!!.listener ={
+            myAdapter.updateRegistros()
+            val count = myAdapter.getItemCount()
+            if (count > 1) {
                 recyclerView.smoothScrollToPosition(myAdapter.getItemCount() - 1)
             }
         }
-        myViewModel!!.allRegistros.observe(this,myObserver)
 
         // Get UI Events
         val btn = findViewById<Button>(R.id.btnGo)
